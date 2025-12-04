@@ -10,7 +10,7 @@ from sklearn.metrics import r2_score, root_mean_squared_error
 from sklearn.preprocessing import PolynomialFeatures
 
 # Для смены текущей рабочей директории
-os.chdir(os.path.dirname(__file__))
+root = os.path.dirname(__file__)
 
 def preprocess_df(df: pd.DataFrame, light_mode=False):
     """
@@ -84,7 +84,7 @@ def preprocess_df(df: pd.DataFrame, light_mode=False):
         return df
 
     # Генерация дополнительных признаков
-    with open('train_medians.pkl', 'rb') as f:
+    with open(root+'/train_medians.pkl', 'rb') as f:
         train_medians = pickle.load(f)
     for col in df.columns[df.isna().any()].tolist() + ['mileage']:
         model_medians = df.groupby('name')[col].median()
@@ -95,7 +95,7 @@ def preprocess_df(df: pd.DataFrame, light_mode=False):
     df[['engine', 'seats']] = df[['engine', 'seats']].astype(int)
     df['brand'] = df['name'].str.split().str[0]
     
-    with open('cars.json', 'r') as f:
+    with open(root+'/cars.json', 'r') as f:
         cars = json.load(f)
     df['car_type'] = df['name'].map(cars)
 
@@ -266,7 +266,7 @@ def load_model(path):
     
     path: Путь до pickle файла, тип - строка
     """
-    with open(path, 'rb') as f:
+    with open(root+'/'+path, 'rb') as f:
         model = pickle.load(f)
     if model is not None:
         st.success("Модель успешно загружена и готова к работе!")
