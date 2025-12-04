@@ -4,10 +4,13 @@ import pandas as pd
 import pickle
 import json
 import plotly.express as px
+import os
 
 from sklearn.metrics import r2_score, root_mean_squared_error
 from sklearn.preprocessing import PolynomialFeatures
 
+# Для смены текущей рабочей директории
+os.chdir(os.path.dirname(__file__))
 
 def preprocess_df(df: pd.DataFrame, light_mode=False):
     """
